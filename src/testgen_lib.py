@@ -17,7 +17,8 @@ import random
 
 class test_generator:
     
-    def __init__(self, testname_in, stud_id_in, stud_name_in):
+    def __init__(self, testname_in, printable_testname_in, stud_id_in, stud_name_in):
+        self.printable_testname = printable_testname_in
         self.stud_id = stud_id_in
         self.stud_name = stud_name_in
         self.form_filename = testname_in
@@ -39,7 +40,7 @@ class test_generator:
             file.write("\n")
             
             file.write("<head>\n");
-            file.write("\t<title>Computer Systems Design: Test 1</title>\n")
+            file.write("\t<title>" + self.printable_testname + "</title>\n")
             file.write("\t<script src=\"FileSaver.js\"></script>\n")
             file.write("</head>\n")
             file.write("\n")
@@ -47,7 +48,7 @@ class test_generator:
             file.write("<body>\n")
             file.write("\n")
             
-            file.write("<h1>2024 - Computer Systems Design (BSc) - Test 1</h1>\n")
+            file.write("<h1>" + self.printable_testname + " - Test 1</h1>\n")
             file.write("<h3>ID: " + self.stud_id + "</h3>\n")
             file.write("<h3>Name: " + self.stud_name + "</h3>\n")
             file.write("\n")
