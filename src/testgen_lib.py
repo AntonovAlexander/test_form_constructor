@@ -46,7 +46,7 @@ class test_generator:
             file.write("<body>\n")
             file.write("\n")
             
-            file.write("<h1>" + self.printable_testname + " - Test 1</h1>\n")
+            file.write("<h1>" + self.printable_testname + "</h1>\n")
             file.write("<h3>ID: " + self.stud_id + "</h3>\n")
             file.write("<h3>Name: " + self.stud_name + "</h3>\n")
             file.write("\n")
