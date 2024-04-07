@@ -21,10 +21,8 @@ class test_generator:
         self.printable_testname = printable_testname_in
         self.stud_id = stud_id_in
         self.stud_name = stud_name_in
-        self.form_filename = testname_in
-        self.form_filename += ".html"
-        self.ref_filename = testname_in + "-reference"
-        self.ref_filename += ".csv"
+        self.form_filename = testname_in + ".html"
+        self.ref_filename = testname_in + ".csv"
         self.test_questions = []
         self.test_questions_counter = 0
     
@@ -86,11 +84,15 @@ class test_generator:
     
     def writeFiles(self, path):
         try:
-            os.makedirs(path)
+            os.makedirs(path + "/forms")
         except:
             print("Warning: directory " + path + " already exists")
-        self.writeForm(path)
-        self.writeReference(path)
+        self.writeForm(path + "/forms")
+        try:
+            os.makedirs(path + "/refs")
+        except:
+            print("Warning: directory " + path + "/refs" + " already exists")
+        self.writeReference(path + "/refs")
         
 
 class test_question:

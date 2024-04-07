@@ -21,4 +21,4 @@ with open('group_info.csv', 'r') as file:
         testgen = example_test(test_name, printable_test_name, row[0], row[1])
         testgen.writeFiles(dir_name)
 
-shutil.copyfile("FileSaver.js", dir_name + "/FileSaver.js")
+shutil.copyfile("FileSaver.js", dir_name + "/forms/FileSaver.js")
