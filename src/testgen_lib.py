@@ -97,20 +97,30 @@ class test_generator:
 
 class test_question:
     def __init__(self):
-        self.question = ""
+        self.questionLines = []
         self.test_question_num = 0
     
     def SetQuestionText(self,  new_question):
-        self.question = new_question
+        self.questionLines = []
+        self.questionLines.append(new_question)
+    
+    def AddQuestionTextLine(self,  new_textline):
+        self.questionLines.append(new_textline)
     
     def SetQuestionCounter(self, num):
         self.test_question_num = num
     
     def write_question_html(self, file):
         file.write("test question!")
+
+    def GetQuestionLines(self):
+        return self.questionLines
     
     def GetQuestion(self):
-        return self.question
+        ret_question = ""
+        for questionLine in self.questionLines:
+            ret_question += (" " + questionLine)
+        return ret_question
     
     def GetTQNum(self):
         return self.test_question_num
@@ -123,7 +133,10 @@ class test_question_text(test_question):
         self.corr_ans_text = corr_ans_text_in
     
     def write_question_html(self, file):
-        file.write("<p>Question " + str(super().GetTQNum()) + ": " + self.question + "</p>\n")
+        file.write("<p>Question " + str(super().GetTQNum()) + ": ")
+        for q_textline in super().GetQuestionLines():
+            file.write("<br>" + q_textline)
+        file.write("</p>\n")
         file.write("<form>\n")
         file.write("<input type=\"text\" id=\"a" + str(super().GetTQNum()) + "\">")
         file.write("</form>\n")
@@ -159,7 +172,10 @@ class test_question_multiple_choice(test_question):
         self.corr_flags.append(new_corr_flags)
     
     def write_question_html(self, file):
-        file.write("<p>Question " + str(super().GetTQNum()) + ": " + self.question + "</p>\n")
+        file.write("<p>Question " + str(super().GetTQNum()) + ": ")
+        for q_textline in super().GetQuestionLines():
+            file.write("<br>" + q_textline)
+        file.write("</p>\n")
         file.write("<form>\n")
         for option in self.options:
             file.write("<input type=\"checkbox\" id=\"a" + str(super().GetTQNum()) +  "_" + str(self.options.index(option)) + "\" name=\"a" + str(super().GetTQNum()) + "\" value=\"HTML\">\n")
@@ -203,7 +219,10 @@ class test_question_radio(test_question):
         self.corr_flags.append(new_corr_flags)
     
     def write_question_html(self, file):
-        file.write("<p>Question " + str(super().GetTQNum()) + ": " + self.question + "</p>\n")
+        file.write("<p>Question " + str(super().GetTQNum()) + ": ")
+        for q_textline in super().GetQuestionLines():
+            file.write("<br>" + q_textline)
+        file.write("</p>\n")
         file.write("<form>\n")
         for option in self.options:
             file.write("<input type=\"radio\" id=\"a" + str(super().GetTQNum()) +  "_" + str(self.options.index(option)) + "\" name=\"a" + str(super().GetTQNum()) + "\" value=\"HTML\">\n")
