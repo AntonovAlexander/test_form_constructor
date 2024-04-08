@@ -213,6 +213,9 @@ class test_question_multiple_choice(test_question):
             file.write(str(super().GetTQNum()) + ";m;" + option + ";" + str(self.corr_flags[self.options.index(option)]) + "\n")
             
     def RandomizeQuestionWithOptionsNum(self, questions_in, custom_options_in, custom_corr_qflags_in, num_options_in):
+        if num_options_in > len(custom_options_in):
+            print("WARNING: requested number of randomized options is larger than available options, decreasing requested number")
+            num_options_in = len(custom_options_in)
         q_num = random.randint(0, len(questions_in)-1)
         super().SetQuestionText(questions_in[q_num])
         custom_option_nums = []
@@ -226,6 +229,13 @@ class test_question_multiple_choice(test_question):
             custom_option_nums.append(opt_num)
             self.AddOption(custom_options_in[opt_num])
             self.AddCorrFlag(custom_corr_qflags_in[opt_num][q_num])
+    
+    def RandomizeQuestionWithOptionsAll(self, questions_in, custom_options_in, custom_corr_qflags_in):
+        q_num = random.randint(0, len(questions_in)-1)
+        super().SetQuestionText(questions_in[q_num])
+        for i in range(len(custom_options_in)):
+            self.AddOption(custom_options_in[i])
+            self.AddCorrFlag(custom_corr_qflags_in[i][q_num])
     
     def RandomizeOptionsNum(self, custom_options_in, custom_corr_qflags_in, num_options_in):
         custom_option_nums = []
@@ -290,8 +300,6 @@ class test_question_radio(test_question):
     def RandomizeQuestionWithOptionsAll(self, questions_in, custom_options_in, custom_corr_qflags_in):
         q_num = random.randint(0, len(questions_in)-1)
         super().SetQuestionText(questions_in[q_num])
-        opt_num = 0
         for i in range(len(custom_options_in)):
-            self.AddOption(custom_options_in[opt_num])
-            self.AddCorrFlag(custom_corr_qflags_in[opt_num][q_num])
-            opt_num += 1
+            self.AddOption(custom_options_in[i])
+            self.AddCorrFlag(custom_corr_qflags_in[i][q_num])
