@@ -15,6 +15,18 @@ import serial
 import os
 import random
 
+def randomize_order(input_list):
+    ret_list = []
+    for i in range(len(input_list)):
+        elem_num = random.randint(0, len(input_list)-1)
+        while 1:
+            if input_list[elem_num] in ret_list:
+                elem_num = random.randint(0, len(input_list)-1)
+            else:
+                break
+        ret_list.append(input_list[elem_num])
+    return ret_list
+
 class test_generator:
     
     def __init__(self, testname_in, printable_testname_in, stud_id_in, stud_name_in):
