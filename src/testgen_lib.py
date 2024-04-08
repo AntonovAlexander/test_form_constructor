@@ -100,11 +100,11 @@ class test_question:
         self.questionLines = []
         self.test_question_num = 0
     
-    def SetQuestionText(self,  new_question):
+    def SetQuestionText(self, new_question):
         self.questionLines = []
         self.questionLines.append(new_question)
     
-    def AddQuestionTextLine(self,  new_textline):
+    def AddQuestionTextLine(self, new_textline):
         self.questionLines.append(new_textline)
     
     def SetQuestionCounter(self, num):
@@ -159,10 +159,10 @@ class test_question_multiple_choice(test_question):
         self.options = []
         self.corr_flags = []
     
-    def SetOptions(self,  new_options):
+    def SetOptions(self, new_options):
         self.options = new_options
         
-    def AddOption(self,  new_options):
+    def AddOption(self, new_options):
         self.options.append(new_options)
     
     def SetCorrFlags(self, new_corr_flags):
@@ -199,6 +199,34 @@ class test_question_multiple_choice(test_question):
     def write_ref_csv(self, file):
         for option in self.options:
             file.write(str(super().GetTQNum()) + ";m;" + option + ";" + str(self.corr_flags[self.options.index(option)]) + "\n")
+            
+    def RandomizeQuestionWithOptionsNum(self, questions_in, custom_options_in, custom_corr_qflags_in, num_options_in):
+        q_num = random.randint(0, len(questions_in)-1)
+        super().SetQuestionText(questions_in[q_num])
+        custom_option_nums = []
+        for i in range(num_options_in):
+            opt_num = random.randint(0, len(custom_options_in)-1)
+            while 1:
+                if opt_num in custom_option_nums:
+                    opt_num = random.randint(0, len(custom_options_in)-1)
+                else:
+                    break
+            custom_option_nums.append(opt_num)
+            self.AddOption(custom_options_in[opt_num])
+            self.AddCorrFlag(custom_corr_qflags_in[opt_num][q_num])
+    
+    def RandomizeOptionsNum(self, custom_options_in, custom_corr_qflags_in, num_options_in):
+        custom_option_nums = []
+        for i in range(num_options_in):
+            opt_num = random.randint(0, len(custom_options_in)-1)
+            while 1:
+                if opt_num in custom_option_nums:
+                    opt_num = random.randint(0, len(custom_options_in)-1)
+                else:
+                    break
+            custom_option_nums.append(opt_num)
+            self.AddOption(custom_options_in[opt_num])
+            self.AddCorrFlag(custom_corr_qflags_in[opt_num][0])
 
 class test_question_radio(test_question):
     def __init__(self):
@@ -206,10 +234,10 @@ class test_question_radio(test_question):
         self.options = []
         self.corr_flags = []
     
-    def SetOptions(self,  new_options):
+    def SetOptions(self, new_options):
         self.options = new_options
         
-    def AddOption(self,  new_options):
+    def AddOption(self, new_options):
         self.options.append(new_options)
     
     def SetCorrFlags(self, new_corr_flags):
@@ -246,3 +274,12 @@ class test_question_radio(test_question):
     def write_ref_csv(self, file):
         for option in self.options:
             file.write(str(super().GetTQNum()) + ";r;" + option + ";" + str(self.corr_flags[self.options.index(option)]) + "\n")
+    
+    def RandomizeQuestionWithOptionsAll(self, questions_in, custom_options_in, custom_corr_qflags_in):
+        q_num = random.randint(0, len(questions_in)-1)
+        super().SetQuestionText(questions_in[q_num])
+        opt_num = 0
+        for i in range(len(custom_options_in)):
+            self.AddOption(custom_options_in[opt_num])
+            self.AddCorrFlag(custom_corr_qflags_in[opt_num][q_num])
+            opt_num += 1
