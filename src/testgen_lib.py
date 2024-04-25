@@ -15,6 +15,26 @@ import serial
 import os
 import random
 
+def cmp_strings_num_aware(q_type, ref_text, ans_text):
+    match_found = 0
+    if q_type == "t":
+        try:
+            if float(ref_text) == float(ans_text):
+                return 1
+        except:
+            match_found = 0
+        
+        try:
+            if int(ref_text, 16) == int(ans_text, 16):
+                return 1
+        except:
+            match_found = 0
+    
+    if ref_text == ans_text:
+        return 1
+    
+    return match_found
+
 def randomize_order(input_list):
     ret_list = []
     for i in range(len(input_list)):
