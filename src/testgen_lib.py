@@ -15,6 +15,8 @@ import serial
 import os
 import random
 
+CSV_DELIMITER = ";"
+
 def cmp_strings_num_aware(q_type, ref_text, ans_text):
     match_found = 0
     if q_type == "t":
@@ -118,12 +120,12 @@ class test_generator:
         try:
             os.makedirs(path + "/forms")
         except:
-            print("Warning: directory " + path + " already exists")
+            pass
         self.writeForm(path + "/forms")
         try:
             os.makedirs(path + "/refs")
         except:
-            print("Warning: directory " + path + "/refs" + " already exists")
+            pass
         self.writeReference(path + "/refs")
         
 
@@ -182,7 +184,9 @@ class test_question_text(test_question):
         file.write("ans = new Blob([ans, \"\\n\"], {type: \"text/plain;charset=utf-8\"});\n")
     
     def write_ref_csv(self, file):
-        file.write(str(super().GetTQNum()) + ";t;" + str(super().GetQuestion()) + ";" + self.corr_ans_text + "\n")
+        qstring = super().GetQuestion()
+        qstring = qstring.replace(CSV_DELIMITER, " ")
+        file.write(str(super().GetTQNum()) + ";t;" + qstring + ";" + self.corr_ans_text + "\n")
         
 
 class test_question_multiple_choice(test_question):
