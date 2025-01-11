@@ -167,7 +167,7 @@ class test_question_text(test_question):
         self.corr_ans_text = corr_ans_text_in
     
     def write_question_html(self, file):
-        file.write("<p>Question " + str(super().GetTQNum()) + ": ")
+        file.write("<p>==== Question " + str(super().GetTQNum()) + " ====")
         for q_textline in super().GetQuestionLines():
             file.write("<br>" + q_textline)
         file.write("</p>\n")
@@ -178,14 +178,13 @@ class test_question_text(test_question):
     def write_csvdownloader_js(self, file):
         file.write("ans = new Blob([ans, \"" + str(super().GetTQNum()) + "\"], {type: \"text/plain;charset=utf-8\"});\n")
         file.write("ans = new Blob([ans, \";t;\"], {type: \"text/plain;charset=utf-8\"});\n")
-        file.write("ans = new Blob([ans, \"" + str(super().GetQuestion()) + "\"], {type: \"text/plain;charset=utf-8\"});\n")
+        file.write("ans = new Blob([ans, \"" + super().GetQuestion().replace(CSV_DELIMITER, " ") + "\"], {type: \"text/plain;charset=utf-8\"});\n")
         file.write("ans = new Blob([ans, \";\"], {type: \"text/plain;charset=utf-8\"});\n")
         file.write("ans = new Blob([ans, document.getElementById('a" + str(super().GetTQNum()) + "').value], {type: \"text/plain;charset=utf-8\"});\n")
         file.write("ans = new Blob([ans, \"\\n\"], {type: \"text/plain;charset=utf-8\"});\n")
     
     def write_ref_csv(self, file):
-        qstring = super().GetQuestion()
-        qstring = qstring.replace(CSV_DELIMITER, " ")
+        qstring = super().GetQuestion().replace(CSV_DELIMITER, " ")
         file.write(str(super().GetTQNum()) + ";t;" + qstring + ";" + self.corr_ans_text + "\n")
         
 
@@ -208,7 +207,7 @@ class test_question_multiple_choice(test_question):
         self.corr_flags.append(new_corr_flags)
     
     def write_question_html(self, file):
-        file.write("<p>Question " + str(super().GetTQNum()) + ": ")
+        file.write("<p>==== Question " + str(super().GetTQNum()) + " ====")
         for q_textline in super().GetQuestionLines():
             file.write("<br>" + q_textline)
         file.write("</p>\n")
@@ -222,7 +221,7 @@ class test_question_multiple_choice(test_question):
         for option in self.options:
             file.write("ans = new Blob([ans, \"" + str(super().GetTQNum()) + "\"], {type: \"text/plain;charset=utf-8\"});\n")
             file.write("ans = new Blob([ans, \";m;\"], {type: \"text/plain;charset=utf-8\"});\n")
-            file.write("ans = new Blob([ans, \"" + option + "\"], {type: \"text/plain;charset=utf-8\"});\n")
+            file.write("ans = new Blob([ans, \"" + option.replace(CSV_DELIMITER, " ") + "\"], {type: \"text/plain;charset=utf-8\"});\n")
             file.write("ans = new Blob([ans, \";\"], {type: \"text/plain;charset=utf-8\"});\n")
             file.write("if(document.getElementById('a" + str(super().GetTQNum()) + "_" + str(self.options.index(option)) + "').checked) {\n")
             file.write("\tans = new Blob([ans, \"1\"], {type: \"text/plain;charset=utf-8\"});\n")
@@ -234,7 +233,7 @@ class test_question_multiple_choice(test_question):
     
     def write_ref_csv(self, file):
         for option in self.options:
-            file.write(str(super().GetTQNum()) + ";m;" + option + ";" + str(self.corr_flags[self.options.index(option)]) + "\n")
+            file.write(str(super().GetTQNum()) + ";m;" + option.replace(CSV_DELIMITER, " ") + ";" + str(self.corr_flags[self.options.index(option)]) + "\n")
             
     def RandomizeQuestionWithOptionsNum(self, questions_in, custom_options_in, custom_corr_qflags_in, num_options_in):
         if num_options_in > len(custom_options_in):
@@ -293,7 +292,7 @@ class test_question_radio(test_question):
         self.corr_flags.append(new_corr_flags)
     
     def write_question_html(self, file):
-        file.write("<p>Question " + str(super().GetTQNum()) + ": ")
+        file.write("<p>==== Question " + str(super().GetTQNum()) + " ====")
         for q_textline in super().GetQuestionLines():
             file.write("<br>" + q_textline)
         file.write("</p>\n")
@@ -307,7 +306,7 @@ class test_question_radio(test_question):
         for option in self.options:
             file.write("ans = new Blob([ans, \"" + str(super().GetTQNum()) + "\"], {type: \"text/plain;charset=utf-8\"});\n")
             file.write("ans = new Blob([ans, \";r;\"], {type: \"text/plain;charset=utf-8\"});\n")
-            file.write("ans = new Blob([ans, \"" + option + "\"], {type: \"text/plain;charset=utf-8\"});\n")
+            file.write("ans = new Blob([ans, \"" + option.replace(CSV_DELIMITER, " ") + "\"], {type: \"text/plain;charset=utf-8\"});\n")
             file.write("ans = new Blob([ans, \";\"], {type: \"text/plain;charset=utf-8\"});\n")
             file.write("if(document.getElementById('a" + str(super().GetTQNum()) + "_" + str(self.options.index(option)) + "').checked) {\n")
             file.write("\tans = new Blob([ans, \"1\"], {type: \"text/plain;charset=utf-8\"});\n")
@@ -319,7 +318,7 @@ class test_question_radio(test_question):
     
     def write_ref_csv(self, file):
         for option in self.options:
-            file.write(str(super().GetTQNum()) + ";r;" + option + ";" + str(self.corr_flags[self.options.index(option)]) + "\n")
+            file.write(str(super().GetTQNum()) + ";r;" + option.replace(CSV_DELIMITER, " ") + ";" + str(self.corr_flags[self.options.index(option)]) + "\n")
     
     def RandomizeQuestionWithOptionsAll(self, questions_in, custom_options_in, custom_corr_qflags_in):
         q_num = random.randint(0, len(questions_in)-1)
